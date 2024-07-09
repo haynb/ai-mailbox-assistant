@@ -7,16 +7,16 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-class mailSvc:
+class MailSvc:
     imapSvc = None
     stmpSvc = None
 
     def __init__(self):
-        self.initImap()
-        self.initSmtp()
+        self.init_imap()
+        self.init_smtp()
         pass
 
-    def initImap(self):
+    def init_imap(self):
         """
         Initialize the IMAP service
         :return:
@@ -35,7 +35,7 @@ class mailSvc:
         self.imapSvc = mail
 
 
-    def initSmtp(self):
+    def init_smtp(self):
         """
         Initialize the SMTP service
         :return:

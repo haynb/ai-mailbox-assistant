@@ -27,8 +27,9 @@ tools = [
     }
 ]
 
+
 messages = [
-    {"role": "system", "content": "Don't make assumptions about what values to plug into functions. Ask for clarification if a user request is ambiguous."},
+    {"role": "system", "content": "Don't make assumptions about what values to plug into functions. Ask for clarification if a user request is ambiguous.If no suitable function is found, returns null."},
     {"role": "user", "content": "What's the weather like today in Beijing?"}
 ]
 

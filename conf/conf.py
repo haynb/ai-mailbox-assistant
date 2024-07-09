@@ -1,12 +1,7 @@
 import configparser
 
 
-class configApp :
-    email_account = ""
-    email_password = ""
-    email_server = ""
-    email_port = 0
-
+class ConfigApp :
     def __init__(self):
         config = configparser.ConfigParser()
         config.read("conf/config.ini")
@@ -16,7 +11,10 @@ class configApp :
         self.email_imap_port = config.getint("email", "imapPort")
         self.email_smtp_server = config.get("email", "smtpServer")
         self.email_smtp_port = config.getint("email", "smtpPort")
+        self.openai_key = config.get("openai", "openai_key")
+        self.openai_default_model = config.get("openai", "openai_default_model")
+        self.openai_base_url = config.get("openai", "openai_base_url")
 
 
 # 实例化 configApp 类
-app_config = configApp()
+app_config = ConfigApp()

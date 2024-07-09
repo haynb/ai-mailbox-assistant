@@ -1,6 +1,6 @@
-from emailSvc.emailServer import mailSvc
+from emailSvc.emailServer import MailSvc
 
-mailSvc = mailSvc()
+mailSvc = MailSvc()
 msg = mailSvc.get_email_message_list()
 msgList = mailSvc.get_email_info(msg,10)
 for items in msgList:
