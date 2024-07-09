@@ -6,4 +6,4 @@ msgList = mailSvc.get_email_info(msg,10)
 for items in msgList:
     print(items[0])
     pass
-print(mailSvc.send_email("heanyang@sailvan.com","静态检查芭芭拉","test"))
+print(mailSvc.send_email("heanyang@sailvan.com","测试邮件，勿回","test\n"))

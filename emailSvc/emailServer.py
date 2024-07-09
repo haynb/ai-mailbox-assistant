@@ -10,7 +10,6 @@ from email.mime.multipart import MIMEMultipart
 class mailSvc:
     imapSvc = None
     stmpSvc = None
-    action = None
 
     def __init__(self):
         self.initImap()
@@ -18,6 +17,10 @@ class mailSvc:
         pass
 
     def initImap(self):
+        """
+        Initialize the IMAP service
+        :return:
+        """
         # 邮箱的IMAP地址和端口
         imap_server = app_config.email_imap_server
         imap_port = app_config.email_imap_port
@@ -33,6 +36,10 @@ class mailSvc:
 
 
     def initSmtp(self):
+        """
+        Initialize the SMTP service
+        :return:
+        """
         # 邮箱的SMTP地址和端口
         smtp_server = app_config.email_smtp_server
         smtp_port = app_config.email_smtp_port
