@@ -58,24 +58,41 @@ class MailSvc:
 
     def get_email_info(self, messages, num: int):
         """
-        Get the email information: subject, from, date
-        :param: messages, num
-        :return: subject, from, date
+        获取邮件信息：主题、发件人、日期及内容
+        :param: messages: 邮件列表，num: 要提取的邮件数量
+        :return: 包含(邮件ID, 主题, 发件人, 日期, 内容)的元组列表
         """
         email_info_list = []
         for i in messages[-num:]:
             status, message = self.imapSvc.fetch(i, '(RFC822)')
             msg = email.message_from_bytes(message[0][1])
+
+            # 获取主题
             subject, encoding = decode_header(msg["Subject"])[0]
             if isinstance(subject, bytes):
                 subject = subject.decode(encoding if encoding else 'utf-8')
+
+            # 获取发件人
             from_ = msg.get("From")
+
+            # 获取日期
             date_ = msg.get("Date")
             try:
                 date_ = parsedate_to_datetime(date_)
             except Exception as e:
                 date_ = None  # 或者设置为一个默认值
-            email_info_list.append((i,subject, from_, date_))
+
+            # 获取邮件内容，只提取第一部分
+            content = ""
+            if msg.is_multipart():
+                first_part = msg.get_payload(0)
+                if first_part.get_content_type() == "text/plain":
+                    content = first_part.get_payload(decode=True).decode(first_part.get_content_charset() or 'utf-8')
+            else:
+                content = msg.get_payload(decode=True).decode(msg.get_content_charset() or 'utf-8')
+
+            email_info_list.append((i, subject, from_, date_, content))
+
         return email_info_list
 
     def get_email_message_list(self, unread_only=False):

@@ -44,7 +44,6 @@ def call_function_weather_api(function_name, **params):
     return f"Weather Info: 72°F and sunny in {params['location']}"
 
 response_message = response.choices[0].message
-messages.append(response_message)
 
 tool_calls = response_message.tool_calls
 if tool_calls:
