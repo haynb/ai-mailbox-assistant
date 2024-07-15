@@ -52,9 +52,23 @@ tools = [
                         "description": "True or False.A boolean value indicating whether the email requires immediate "
                                        "attention or action. If set to true, it signifies that the email is urgent "
                                        "and should be addressed as soon as possible."
+                    },
+                    "scheduled": {
+                        "type": "boolean",
+                        "description": "True or False.If this email is not urgent, do we need to create a scheduled "
+                                       "task to remind the email owner at a certain time?"
+                    },
+                    "task_content": {
+                        "type": "string",
+                        "description": "If we need to create a scheduled reminder, what should we remind the email "
+                                       "owner at that time?"
+                    },
+                    "time": {
+                        "type": "string",
+                        "description": "If a reminder is needed, you need to set the reminder time."
                     }
                 },
-                "required": ["summarize", "importance", "urgency"]
+                "required": ["summarize", "importance", "urgency", "scheduled", "task_content", "time"]
             }
         }
     }

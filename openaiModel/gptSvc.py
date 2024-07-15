@@ -23,7 +23,7 @@ class GptSvc:
     def add_message(self, role: str, content: str):
         self.messages.append({"role": role, "content": content})
 
-    def call_function(self):
+    def call_function(self,name: str,func):
         response = self.client.chat.completions.create(
             model=app_config.openai_default_model,
             messages=self.messages,
@@ -31,7 +31,17 @@ class GptSvc:
             tool_choice="auto"
         )
         response_message = response.choices[0].message
-        return response_message
+        tool_calls = response_message.tool_calls
+        if tool_calls:
+            tool_function_name = tool_calls[0].function.name
+            arguments = tool_calls[0].function.arguments.replace('false', 'False').replace('true', 'True')
+            params = eval(arguments)
+            if tool_function_name == name:
+                return func(**params)
+            else:
+                return None
 
     def summarize_email(self, **params):
+        # todo 写入文件以及根据Urgency决定后续处理方式
+        print(params)
         print( f"Summarize: {params['summarize']} \n, Importance: {params['importance']} \n, Urgency: {params['urgency']} \n")
