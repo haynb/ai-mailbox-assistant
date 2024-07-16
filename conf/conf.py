@@ -14,6 +14,7 @@ class ConfigApp :
         self.openai_key = config.get("openai", "openai_key")
         self.openai_default_model = config.get("openai", "openai_default_model")
         self.openai_base_url = config.get("openai", "openai_base_url")
+        self.content_file_path = config.get("common", "content_file_path")
 
 
 # 实例化 configApp 类

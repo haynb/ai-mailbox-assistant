@@ -34,6 +34,10 @@ tools = [
             "parameters": {
                 "type": "object",
                 "properties": {
+                    "email_id": {
+                        "type": "string",
+                        "description": "The email_id"
+                    },
                     "summarize": {
                         "type": "string",
                         "description": "A concise summary of the email content, highlighting the main points, "
@@ -65,7 +69,8 @@ tools = [
                     },
                     "time": {
                         "type": "string",
-                        "description": "If a reminder is needed, you need to set the reminder time."
+                        "description": "If a reminder is needed, you need to set the reminder time.Accurate to year, "
+                                       "month, day, hour, minute and second"
                     }
                 },
                 "required": ["summarize", "importance", "urgency", "scheduled", "task_content", "time"]

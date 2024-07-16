@@ -1,6 +1,9 @@
+import common.writeFile
 from conf.conf import app_config
 from .tools import tools
 import openai
+from datetime import datetime
+from apscheduler.schedulers.background import BackgroundScheduler
 
 
 class GptSvc:
@@ -8,7 +11,7 @@ class GptSvc:
     tools = None
     messages = None
 
-    def __init__(self):
+    def __init__(self, mailSvc):
         self.client = openai.OpenAI(base_url=app_config.openai_base_url, api_key=app_config.openai_key)
         self.tools = tools
         self.messages = [
@@ -18,12 +21,13 @@ class GptSvc:
                         "for clarification if a user request is ambiguous. If no suitable function is found, "
                         "returns null."}
         ]
+        self.mailSvc = mailSvc
         pass
 
     def add_message(self, role: str, content: str):
         self.messages.append({"role": role, "content": content})
 
-    def call_function(self,name: str,func):
+    def call_function(self, name: str, func):
         response = self.client.chat.completions.create(
             model=app_config.openai_default_model,
             messages=self.messages,
@@ -42,6 +46,26 @@ class GptSvc:
                 return None
 
     def summarize_email(self, **params):
-        # todo 写入文件以及根据Urgency决定后续处理方式
+        if params['urgency']:
+            self.notify_users()
+            pass
         print(params)
-        print( f"Summarize: {params['summarize']} \n, Importance: {params['importance']} \n, Urgency: {params['urgency']} \n")
+        origin_data = self.mailSvc.get_email_info(params['email_id'].encode('utf-8'))
+        common.writeFile.write_email_to_file(subject=origin_data[0], sender=origin_data[1], date=origin_data[2],
+                                             summary=params['summarize'], file_path=app_config.content_file_path)
+        if params['scheduled']:
+            run_time = datetime.fromisoformat(params['time'])
+            print(run_time)
+            scheduler = BackgroundScheduler()
+            scheduler.add_job(self.scheduled_task, 'date', run_date=run_time)
+            scheduler.start()
+
+    def notify_users(self):
+        # todo 写入文件以及根据Urgency决定后续处理方式
+        pass
+
+    def scheduled_task(self):
+        print("任务执行了！")
+        # 定时提醒用户
+        self.notify_users()
+
