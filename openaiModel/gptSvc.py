@@ -49,13 +49,12 @@ class GptSvc:
         if params['urgency']:
             self.notify_users()
             pass
-        print(params)
         origin_data = self.mailSvc.get_email_info(params['email_id'].encode('utf-8'))
         common.writeFile.write_email_to_file(subject=origin_data[0], sender=origin_data[1], date=origin_data[2],
                                              summary=params['summarize'], file_path=app_config.content_file_path)
+        print(params)
         if params['scheduled']:
             run_time = datetime.fromisoformat(params['time'])
-            print(run_time)
             scheduler = BackgroundScheduler()
             scheduler.add_job(self.scheduled_task, 'date', run_date=run_time)
             scheduler.start()
