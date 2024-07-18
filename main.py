@@ -20,7 +20,7 @@ def start():
             + result[3]
         )
         gptSvc.add_message("user", message)
-        response = gptSvc.call_function("summarize_email", gptSvc.summarize_email)
+        gptSvc.call_function("summarize_email", gptSvc.summarize_email)
 
 # 每小时执行一次 summarize_emails 函数
 schedule.every(1).hours.do(start)
